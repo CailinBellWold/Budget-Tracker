@@ -1,26 +1,29 @@
 const FILES_TO_CACHE = [
   '/',
+  '/icons/icon-192x192.png',
+  '/icons/icon-512x512.png',
+  '/db.js',
   '/index.html',
-  '/styles.css',
-  'https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css',
+  '/index.js',
+  '/manifest.webmanifest',
+  '/styles.css'
 ];
 
-const PRECACHE = 'precache-v1';
-const RUNTIME = 'runtime';
+const PRE_CACHE = `pre-cache-v1`;
+const RUNTIME_CACHE = `runtime-cache`;
 
-self.addEventListener('install', (event) => {
-  event.waitUntil(
+self.addEventListener(`install`, (e) => {
+  e.waitUntil(
     caches
-      .open(PRECACHE)
+      .open(PRE_CACHE)
       .then((cache) => cache.addAll(FILES_TO_CACHE))
       .then(self.skipWaiting())
   );
 });
 
-// The activate handler takes care of cleaning up old caches.
-self.addEventListener('activate', (event) => {
-  const currentCaches = [PRECACHE, RUNTIME];
-  event.waitUntil(
+self.addEventListener(`activate`, (e) => {
+  const currentCaches = [PRE_CACHE, RUNTIME_CACHE];
+  e.waitUntil(
     caches
       .keys()
       .then((cacheNames) => {
@@ -37,22 +40,34 @@ self.addEventListener('activate', (event) => {
   );
 });
 
-self.addEventListener('fetch', (event) => {
-  if (event.request.url.startsWith(self.location.origin)) {
-    event.respondWith(
-      caches.match(event.request).then((cachedResponse) => {
-        if (cachedResponse) {
-          return cachedResponse;
-        }
-
-        return caches.open(RUNTIME).then((cache) => {
-          return fetch(event.request).then((response) => {
-            return cache.put(event.request, response.clone()).then(() => {
-              return response;
-            });
-          });
-        });
-      })
-    );
+self.addEventListener(`fetch`, (e) => {
+  if (e.request.method !== `GET` || !e.request.url.startsWith(self.location.origin)) {
+    e.respondWith(fetch(e.request));
+    return;
   }
+
+  if (e.request.url.includes(`/api/transaction`)) {
+    e.respondWith(caches.open(RUNTIME_CACHE)
+      .then(cache => fetch(e.request)
+        .then(response => {cache.put(e.request, response.clone());
+          return response;
+        })
+        .catch(() => caches.match(e.request))
+      )
+    );
+    return;
+  }
+
+  e.respondWith(caches.match(e.request)
+    .then(cachedResponse => {
+      if (cachedResponse) {
+        return cachedResponse;
+      }
+      return caches
+      .open(RUNTIME_CACHE)
+      .then(cache => fetch(e.request)
+      .then(response => cache.put(e.request, response.clone())
+        .then(() => response)
+      ));
+  }));
 });
