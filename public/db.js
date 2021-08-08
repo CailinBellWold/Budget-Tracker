@@ -1,5 +1,5 @@
 let db;
-const request = indexedDB.open('budget', 1);
+const request = window.indexedDB.open('budget', 1); //Creates a new req for budget db.
 
 function checkForIndexedDb() {
   indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB || window.shimIndexedDB;
@@ -12,9 +12,8 @@ function checkForIndexedDb() {
 }
 
 request.onupgradeneeded = ({ target }) => {
-  let db = target.result;
-  db.createObjectStore('pending', { autoIncrement: true });
-  console.log('Created Pending Item in Object Store');
+  db = target.result;
+  const objectStore = db.createObjectStore('PendingStore', { autoIncrement: true });
 };
 
 request.onsuccess = ({ target }) => {
@@ -25,20 +24,20 @@ request.onsuccess = ({ target }) => {
   }
 };
 
-request.onerror = function(event) {
-  console.log('Woops! ' + event.target.errorCode);
+request.onerror = function(e) {
+  console.log(`Error: ${e.target.errorCode}`)
 };
 
 function saveRecord(record) {
-  const transaction = db.transaction(['pending'], 'readwrite');
-  const store = transaction.objectStore('pending');
+  const transaction = db.transaction(['PendingStore'], 'readwrite');
+  const store = transaction.objectStore('PendingStore');
 
   store.add(record);
 }
 
 function checkDatabase() {
-  const transaction = db.transaction(['pending'], 'readwrite');
-  const store = transaction.objectStore('pending');
+  const transaction = db.transaction(['PendingStore'], 'readwrite');
+  const store = transaction.objectStore('PendingStore');
   const getAll = store.getAll();
 
   getAll.onsuccess = function() {
@@ -51,16 +50,16 @@ function checkDatabase() {
           'Content-Type': 'application/json'
         }
       })
-      .then(response => {
-        return response.json();
-      })
+      .then((response) => response.json())
       .then(() => {
-        const transaction = db.transaction(['pending'], 'readwrite');
-        const store = transaction.objectStore('pending');
-        store.clear();
+        if (res.length !== 0) {
+          transaction = db.transaction(['PendingStore'], 'readwrite');
+          const currentStore = transaction.objectStore('PendingStore');
+          currentStore.clear();
+        }
       });
     }
   };
-  }
+}
 
 window.addEventListener('online', checkDatabase);
