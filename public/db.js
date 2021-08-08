@@ -13,7 +13,7 @@ function checkForIndexedDb() {
 
 request.onupgradeneeded = ({ target }) => {
   db = target.result;
-  const objectStore = db.createObjectStore('PendingStore', { autoIncrement: true });
+  const pendingStore = db.createObjectStore('PendingStore', { autoIncrement: true });
 };
 
 request.onsuccess = ({ target }) => {
