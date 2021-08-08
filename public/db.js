@@ -1,5 +1,5 @@
 let db;
-const request = window.indexedDB.open('budget', 1); //Creates a new req for budget db.
+const request = window.indexedDB.open('budget-tracker', 1);
 
 function checkForIndexedDb() {
   indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB || window.shimIndexedDB;
