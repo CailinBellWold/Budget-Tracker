@@ -10,8 +10,8 @@ Add functionality to an existing Budget Tracker application to allow for offline
 
 Gaining skills to allow user of my apps to use offline functionality will allow users to access their information any time, improving overall app functionality.
 
-<!-- ### Learning Targets -->
-<!-- This exercise provided opportunities to test my budding skills with Mongo and Mongoose, and allowed further opportunities to develop pre-existing skills handling routes with Express.js -->
+### Learning Targets
+Build out the manifest, service-worker and db files need to create a progressive web app (PWA). Continue to develop skills working with Mongo/Mongoose and deploying to Heroku while hosting the database on MongoDB Atlas.
 
 ## Table of Contents
 - [Core Objectives Met](#Core)
@@ -40,29 +40,23 @@ Gaining skills to allow user of my apps to use offline functionality will allow 
 - [NPM dotenv Package](https://www.npmjs.com/package/dotenv)
 - [NPM nodemon Package](https://www.npmjs.com/package/nodemon)
 
-<!-- ## Local Installation & Usage -->
+## Local Installation & Usage
 
-<!-- To use this app, you will need a Mongo account, and to have the app installed on your machine. Documentation with installation instructions are available [here.](https://dev.mysql.com/doc/workbench/en/wb-installing.html) 
+To use this app, you will need a MongoDB account, and to have the app installed on your machine. Documentation with installation instructions are available [here.](https://docs.mongodb.com/manual/installation/) 
 
 STEP 1
 
-    1.1 Clone this Workout-Tracker repo to your machine.
+    1.1 Clone this Budget-Tracker repo to your machine.
 
 STEP 2
 
-From Visual Studio Code or the code editor of your choice:
+From your terminal, run:
 
-    2.1 Open the repo.
-    2.2 Locate and open the .env.EXAMPLE file, located in the root directory.
-    2.3 Add your own MySQL Workbench Username and Password to the env.EXAMPLE file.
-    2.4 Re-name the file to .env (i.e. remove .EXAMPLE).
-    2.5 Save your changes.
-    2.6 Locate and open db\schema.sql.
-    2.7 Copy and paste the database schema into a new MySQL Workbench query tab and run it. Refresh and view your updated schemas to ensure that techblog_db now appears.
+    2.1 mongo
 
 STEP 3
 
-From your terminal, run:
+From a second terminal window, run:
 
     3.1 npm i
     3.2 npm run watch
@@ -71,15 +65,19 @@ STEP 4
 
 From the modern browser of your choice, visit:
 
-    4.1 http://localhost:3001 -->
+    4.1 http://localhost:3000
 
-<!-- ## Deployed App -->
+## Deployed App
 
-<!-- [This Budget Tracker app has been deployed on Heroku and is available here.](https://budget-tracker-cailin.herokuapp.com/) -->
+[This Budget Tracker app has been deployed on Heroku and is available here.](https://budget-tracker-cailin.herokuapp.com/)
 
-<!-- ## Demo  -->
+## Demo
 
-<!-- Link: [Budget-Tracker demo](https://drive.google.com/file/d/1HTyx6dRZKhin4lxi1JXKZvK0jWWVaZga/view) -->
+Link: [Budget-Tracker demo](https://drive.google.com/file/d/1ha4k0m_-weLcQlnftrIUmm4fSGk6Op_6/view)
+
+SCREENSHOT: Homepage, containing funds both added and subtracted while on- and off-line.
+
+![Budget Tracker Dashboard.](/public/images/Budget-Tracker-Screenshot.png)
 
 ## MIT License
 
